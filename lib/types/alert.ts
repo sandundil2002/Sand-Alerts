@@ -1,4 +1,4 @@
-import React from "react";
+import {LucideIcon} from "lucide-react";
 
 export type AlertType = 'success' | 'error' | 'warning' | 'info';
 export type AlertPosition = 'top' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
@@ -10,7 +10,7 @@ export interface AlertOptions {
   message: string;
   duration?: number;
   position?: AlertPosition;
-  icon?: React.ReactNode;
+  icon?: LucideIcon;
   animation?: AlertAnimation;
   showCloseButton?: boolean;
   showProgressBar?: boolean;
