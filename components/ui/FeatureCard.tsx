@@ -4,23 +4,18 @@ interface FeatureCardProps {
     icon: React.ReactNode;
     title: string;
     description: string;
-    color: {
-        light: string;
-        dark: string;
-        text: string;
-    };
 }
 
-export default function FeatureCard({ icon, title, description, color }: FeatureCardProps) {
+export default function FeatureCard({ icon, title, description }: FeatureCardProps) {
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-300 border border-gray-200 dark:border-gray-700">
-            <div
-                className={`h-12 w-12 rounded-lg ${color.light} dark:${color.dark} flex items-center justify-center ${color.text} mb-4`}
-            >
+        <div className="bg-teal-50 dark:bg-teal-800 rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 border border-teal-200 dark:border-teal-700">
+            <div className="h-12 w-12 bg-teal-100 dark:bg-teal-700 rounded-lg flex items-center justify-center mb-4">
                 {icon}
             </div>
-            <h3 className="text-lg font-medium mb-2">{title}</h3>
-            <p className="text-gray-600 dark:text-gray-400">{description}</p>
+            <h3 className="text-lg font-semibold text-white mb-2">
+                {title}
+            </h3>
+            <p className="text-teal-200">{description}</p>
         </div>
     );
 }
