@@ -1,27 +1,27 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { AlertCircle, CheckCircle, Info, X, XCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, Info, X, XCircle, LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAlert } from '@/lib/hooks/useAlert';
 import { Alert as AlertType } from '@/lib/types/alert';
 import { useAlertSound } from '@/lib/hooks/useAlertSound';
 
 const alertStyles = {
-    success: 'bg-green-50 border-green-500 text-green-800 dark:bg-green-900/50 dark:text-green-300',
-    error: 'bg-red-50 border-red-500 text-red-800 dark:bg-red-900/50 dark:text-red-300',
-    warning: 'bg-yellow-50 border-yellow-500 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
-    info: 'bg-blue-50 border-blue-500 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300',
+    success: 'bg-green-100 border-green-600 text-green-900 dark:bg-green-800 dark:border-green-400 dark:text-green-100',
+    error: 'bg-red-100 border-red-600 text-red-900 dark:bg-red-800 dark:border-red-400 dark:text-red-100',
+    warning: 'bg-yellow-100 border-yellow-600 text-yellow-900 dark:bg-yellow-800 dark:border-yellow-400 dark:text-yellow-100',
+    info: 'bg-blue-100 border-blue-600 text-blue-900 dark:bg-blue-800 dark:border-blue-400 dark:text-blue-100',
 };
 
 const progressStyles = {
-    success: 'bg-green-500 dark:bg-green-400',
-    error: 'bg-red-500 dark:bg-red-400',
-    warning: 'bg-yellow-500 dark:bg-yellow-400',
-    info: 'bg-blue-500 dark:bg-blue-400',
+    success: 'bg-green-600 dark:bg-green-300',
+    error: 'bg-red-600 dark:bg-red-300',
+    warning: 'bg-yellow-600 dark:bg-yellow-300',
+    info: 'bg-blue-600 dark:bg-blue-300',
 };
 
-const icons = {
+const icons: Record<string, LucideIcon> = {
     success: CheckCircle,
     error: XCircle,
     warning: AlertCircle,
@@ -29,18 +29,31 @@ const icons = {
 };
 
 interface AlertProps {
-    alert: AlertType;
+    alert: AlertType & {
+        soundOptions?: { volume?: number; loop?: boolean; customSound?: string };
+    };
 }
 
 export const Alert = ({ alert }: AlertProps) => {
     const { hideAlert } = useAlert();
-    const playSound = useAlertSound(alert.type || 'info');
+    const { play: playSound, toggleMute, isMuted } = useAlertSound(alert.type || 'info', {
+        volume: alert.soundOptions?.volume ?? 0.5,
+        loop: alert.soundOptions?.loop ?? false,
+        customSound: alert.soundOptions?.customSound,
+    });
 
     useEffect(() => {
         if (alert.playSound) {
-            playSound();
+            const timer = setTimeout(() => {
+                try {
+                    playSound();
+                } catch (err) {
+                    console.error('Failed to play alert sound:', err);
+                }
+            }, 100);
+            return () => clearTimeout(timer);
         }
-    }, [alert.playSound, playSound]);
+    }, [alert.id, alert.playSound, playSound]);
 
     useEffect(() => {
         if (alert.duration && alert.duration > 0) {
@@ -51,7 +64,7 @@ export const Alert = ({ alert }: AlertProps) => {
         }
     }, [alert.duration, alert.id, hideAlert]);
 
-    const Icon = alert.icon || icons[alert.type || 'info'];
+    const IconComponent = alert.icon || icons[alert.type || 'info'];
 
     return (
         <div
@@ -64,30 +77,34 @@ export const Alert = ({ alert }: AlertProps) => {
             role="alert"
         >
             <div className="flex items-start gap-3">
-                <Icon className="h-5 w-5 shrink-0" />
+                <IconComponent className="h-5 w-5 shrink-0" />
                 <div className="flex-1">
-                    {alert.title && (
-                        <h3 className="font-semibold">{alert.title}</h3>
-                    )}
+                    {alert.title && <h3 className="font-semibold">{alert.title}</h3>}
                     <p className="text-sm">{alert.message}</p>
                 </div>
-                {alert.showCloseButton && (
+                <div className="flex items-center gap-2">
                     <button
-                        onClick={() => hideAlert(alert.id)}
+                        onClick={toggleMute}
                         className="shrink-0 rounded-md p-1 opacity-70 transition-opacity hover:opacity-100"
-                        aria-label="Close alert"
+                        aria-label={isMuted ? 'Unmute sound' : 'Mute sound'}
                     >
-                        <X className="h-4 w-4" />
+                        {isMuted ? '🔇' : '🔊'}
                     </button>
-                )}
+                    {alert.showCloseButton && (
+                        <button
+                            onClick={() => hideAlert(alert.id)}
+                            className="shrink-0 rounded-md p-1 opacity-70 transition-opacity hover:opacity-100"
+                            aria-label="Close alert"
+                        >
+                            <X className="h-4 w-4" />
+                        </button>
+                    )}
+                </div>
             </div>
             {alert.showProgressBar && (
                 <div className="absolute bottom-0 left-0 right-0 h-1 overflow-hidden rounded-b-lg">
                     <div
-                        className={cn(
-                            'h-full transition-all duration-100',
-                            progressStyles[alert.type || 'info']
-                        )}
+                        className={cn('h-full transition-all duration-100', progressStyles[alert.type || 'info'])}
                         style={{ width: `${alert.progress}%` }}
                     />
                 </div>

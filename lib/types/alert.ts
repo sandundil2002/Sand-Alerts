@@ -16,6 +16,7 @@ export interface AlertOptions {
   showProgressBar?: boolean;
   playSound?: boolean;
   groupId?: string;
+  soundOptions?: { volume?: number; loop?: boolean; customSound?: string };
 }
 
 export interface Alert extends AlertOptions {
