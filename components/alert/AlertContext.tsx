@@ -26,17 +26,17 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
       type: options.type || 'info',
       title: options.title,
       message: options.message,
-      duration: options.type === 'confirm' ? undefined : options.duration || 5000, // No duration for confirm
+      duration: options.type === 'confirm' ? undefined : options.duration || 5000,
       position: options.position || 'bottom-right',
       icon: options.icon,
       animation: options.animation || 'fade',
-      showCloseButton: options.showCloseButton ?? (options.type !== 'confirm'), // Disable close button for confirm by default
-      showProgressBar: options.showProgressBar ?? (options.type !== 'confirm'), // Disable progress bar for confirm by default
+      showCloseButton: options.showCloseButton ?? (options.type !== 'confirm'),
+      showProgressBar: options.showProgressBar ?? (options.type !== 'confirm'),
       playSound: options.playSound ?? false,
       groupId: options.groupId,
       confirm: options.confirm,
       createdAt: Date.now(),
-      progress: options.type === 'confirm' ? 100 : 100, // No progress reduction for confirm
+      progress: options.type === 'confirm' ? 100 : 100,
     };
 
     if (alerts.length < maxVisibleAlerts) {
@@ -65,7 +65,7 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
     const interval = setInterval(() => {
       setAlerts((prev) =>
           prev.map((alert) => {
-            if (alert.type === 'confirm') return alert; // Skip progress for confirm alerts
+            if (alert.type === 'confirm') return alert;
             return {
               ...alert,
               progress: Math.max(0, 100 - ((Date.now() - alert.createdAt) / (alert.duration || 5000)) * 100),

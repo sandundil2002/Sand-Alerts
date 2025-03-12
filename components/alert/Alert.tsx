@@ -98,7 +98,6 @@ export const Alert = ({ alert }: AlertProps) => {
                 <div className="flex-1">
                     {alert.title && <h3 className="font-semibold">{alert.title}</h3>}
                     <p className="text-sm">{alert.message}</p>
-                    {/* Confirmation Buttons */}
                     {alert.type === 'confirm' && (
                         <div className="mt-4 flex gap-2">
                             <button
