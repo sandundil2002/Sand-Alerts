@@ -1,6 +1,6 @@
-import {LucideIcon} from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
-export type AlertType = 'success' | 'error' | 'warning' | 'info';
+export type AlertType = 'success' | 'error' | 'warning' | 'info' | 'confirm'; // Added 'confirm' type
 export type AlertPosition = 'top' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 export type AlertAnimation = 'fade' | 'slide';
 
@@ -17,6 +17,10 @@ export interface AlertOptions {
   playSound?: boolean;
   groupId?: string;
   soundOptions?: { volume?: number; loop?: boolean; customSound?: string };
+  confirm?: {
+    onConfirm: () => void; 
+    onCancel?: () => void;
+  };
 }
 
 export interface Alert extends AlertOptions {

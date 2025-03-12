@@ -14,7 +14,7 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
     if (alertQueue.current.length > 0 && alerts.length < maxVisibleAlerts) {
       const nextAlert = alertQueue.current.shift();
       if (nextAlert) {
-        setAlerts(prev => [...prev, nextAlert]);
+        setAlerts((prev) => [...prev, nextAlert]);
       }
     }
   }, [alerts.length]);
@@ -26,20 +26,21 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
       type: options.type || 'info',
       title: options.title,
       message: options.message,
-      duration: options.duration || 5000,
+      duration: options.type === 'confirm' ? undefined : options.duration || 5000, // No duration for confirm
       position: options.position || 'bottom-right',
       icon: options.icon,
       animation: options.animation || 'fade',
-      showCloseButton: options.showCloseButton ?? true,
-      showProgressBar: options.showProgressBar ?? true,
+      showCloseButton: options.showCloseButton ?? (options.type !== 'confirm'), // Disable close button for confirm by default
+      showProgressBar: options.showProgressBar ?? (options.type !== 'confirm'), // Disable progress bar for confirm by default
       playSound: options.playSound ?? false,
       groupId: options.groupId,
+      confirm: options.confirm,
       createdAt: Date.now(),
-      progress: 100,
+      progress: options.type === 'confirm' ? 100 : 100, // No progress reduction for confirm
     };
 
     if (alerts.length < maxVisibleAlerts) {
-      setAlerts(prev => [...prev, newAlert]);
+      setAlerts((prev) => [...prev, newAlert]);
     } else {
       alertQueue.current.push(newAlert);
     }
@@ -47,10 +48,13 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
     return id;
   }, [alerts.length]);
 
-  const hideAlert = useCallback((id: string) => {
-    setAlerts(prev => prev.filter(alert => alert.id !== id));
-    processQueue();
-  }, [processQueue]);
+  const hideAlert = useCallback(
+      (id: string) => {
+        setAlerts((prev) => prev.filter((alert) => alert.id !== id));
+        processQueue();
+      },
+      [processQueue]
+  );
 
   const clearAlerts = useCallback(() => {
     setAlerts([]);
@@ -59,25 +63,24 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setAlerts(prev =>
-        prev.map(alert => ({
-          ...alert,
-          progress: Math.max(
-            0,
-            // @ts-ignore
-            100 - ((Date.now() - alert.createdAt) / alert.duration) * 100
-          ),
-        }))
+      setAlerts((prev) =>
+          prev.map((alert) => {
+            if (alert.type === 'confirm') return alert; // Skip progress for confirm alerts
+            return {
+              ...alert,
+              progress: Math.max(0, 100 - ((Date.now() - alert.createdAt) / (alert.duration || 5000)) * 100),
+            };
+          })
       );
 
-      setAlerts(prev =>
-        prev.filter(alert => {
-          const shouldKeep = alert.progress > 0;
-          if (!shouldKeep) {
-            processQueue();
-          }
-          return shouldKeep;
-        })
+      setAlerts((prev) =>
+          prev.filter((alert) => {
+            const shouldKeep = alert.type === 'confirm' || alert.progress > 0;
+            if (!shouldKeep) {
+              processQueue();
+            }
+            return shouldKeep;
+          })
       );
     }, 10);
 
@@ -85,8 +88,8 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
   }, [processQueue]);
 
   return (
-    <AlertContext.Provider value={{ alerts, showAlert, hideAlert, clearAlerts }}>
-      {children}
-    </AlertContext.Provider>
+      <AlertContext.Provider value={{ alerts, showAlert, hideAlert, clearAlerts }}>
+        {children}
+      </AlertContext.Provider>
   );
 };
