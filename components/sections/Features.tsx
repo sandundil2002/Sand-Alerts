@@ -55,7 +55,7 @@ export default function Features() {
                 <h2 className="text-3xl font-bold tracking-tight text-teal-900 sm:text-4xl">
                     Powerful Features for Modern Applications
                 </h2>
-                <p className="mt-4 text-lg text-teal-700 max-w-3xl mx-auto">
+                <p className="mt-4 text-lg max-w-3xl mx-auto">
                     Sand Alerts provides a comprehensive set of features designed to enhance user experience
                     and streamline developer workflow.
                 </p>
@@ -76,7 +76,7 @@ export default function Features() {
                 <h3 className="text-2xl font-semibold text-teal-900 mb-4">
                     Want to See Them in Action?
                 </h3>
-                <p className="text-teal-700 max-w-2xl mx-auto">
+                <p className="max-w-2xl mx-auto">
                     Check out the Examples page to interact with Sand Alerts and see how these features work
                     in a real application.
                 </p>
