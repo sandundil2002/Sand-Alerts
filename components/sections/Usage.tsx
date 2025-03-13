@@ -64,7 +64,7 @@ export default CustomAlertComponent;`;
             </div>
 
             <div className="space-y-12">
-                <section className="bg-white rounded-xl shadow-sm p-6 border mx-4 border-gray-200">
+                <section className="bg-white rounded-xl shadow-sm p-6 mx-4 border border-teal-700">
                     <h3 className="text-xl font-semibold mb-4">Basic Usage</h3>
                     <p className="text-gray-600 mb-4">
                         Trigger a simple success alert with sound using the <code>useAlert</code> hook.
@@ -75,7 +75,7 @@ export default CustomAlertComponent;`;
                     />
                 </section>
 
-                <section className="bg-white rounded-xl shadow-sm p-6 border mx-4 border-gray-200">
+                <section className="bg-white rounded-xl shadow-sm p-6 mx-4 border border-teal-700">
                     <h3 className="text-xl font-semibold mb-4">Custom Icon</h3>
                     <p className="text-gray-600 mb-4">
                         Customize the alert icon with any Lucide React icon and set an auto-dismiss duration.

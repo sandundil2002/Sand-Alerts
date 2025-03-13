@@ -1,7 +1,6 @@
 'use client';
 
-import { useTheme } from 'next-themes';
-import { Sun, Moon, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import Link from "next/link";
 import {usePathname} from "next/navigation";
@@ -12,7 +11,6 @@ export interface NavLink {
 }
 
 export default function Header() {
-    const { theme, setTheme } = useTheme();
     const [menuOpen, setMenuOpen] = useState(false);
 
     return (
@@ -32,18 +30,6 @@ export default function Header() {
                         <nav className="hidden lg:flex items-center gap-8">
                             <NavLinks />
                         </nav>
-
-                        <button
-                            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                            className="p-2 rounded-lg text-teal-700 dark:text-teal-100 hover:bg-teal-100 dark:hover:bg-teal-700 transition-colors"
-                            aria-label="Toggle theme"
-                        >
-                            {theme === 'dark' ? (
-                                <Sun className="h-5 w-5" />
-                            ) : (
-                                <Moon className="h-5 w-5" />
-                            )}
-                        </button>
 
                         <button
                             className="lg:hidden p-2 rounded-lg text-teal-700 dark:text-teal-100 hover:bg-teal-100 dark:hover:bg-teal-700 transition-colors"
@@ -75,7 +61,7 @@ function NavLinks() {
         { name: 'Features', href: '/features' },
         { name: 'Usage', href: '/usage' },
         { name: 'Configuration', href: '/configuration' },
-        { name: 'Getting Started', href: '/getting-started' },
+        { name: 'Getting Started', href: '/started' },
     ];
 
     return (

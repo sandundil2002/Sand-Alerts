@@ -74,7 +74,7 @@ export default AnimatedAlertComponent;`;
             </div>
 
             <div className="space-y-12">
-                <section className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 mx-4">
+                <section className="bg-white rounded-xl shadow-sm p-6 border border-teal-700 mx-4">
                     <h3 className="text-xl font-semibold mb-4">Sound Configuration</h3>
                     <p className="text-gray-600 mb-4">
                         Enhance alerts with custom sound effects, volume control, and looping options.
@@ -85,7 +85,7 @@ export default AnimatedAlertComponent;`;
                     />
                 </section>
 
-                <section className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 mx-4">
+                <section className="bg-white rounded-xl shadow-sm p-6 border border-teal-700 mx-4">
                     <h3 className="text-xl font-semibold mb-4">Animation Configuration</h3>
                     <p className="text-gray-600 mb-4">
                         Add smooth enter and exit animations to make alerts visually engaging.

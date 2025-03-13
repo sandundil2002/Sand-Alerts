@@ -1,4 +1,5 @@
 'use client';
+
 import { ArrowRight } from 'lucide-react';
 import FeatureCard from "@/components/ui/FeatureCard";
 import React from "react";
@@ -54,8 +55,10 @@ export default function Introduction() {
                         </p>
                         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6">
                             <button
-                                className="w-full sm:w-auto rounded-md bg-white px-5 py-3 text-sm font-semibold text-teal-600 shadow-sm hover:bg-teal-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 flex items-center justify-center gap-2"
+                                className="w-full sm:w-auto rounded-md bg-white px-5 py-3 text-sm font-semibold text-teal-600 shadow-sm hover:bg-teal-50 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-teal-600 flex items-center justify-center gap-2"
+                                onClick={() => window.location.href = '/started'}
                             >
+
                                 Get Started
                                 <ArrowRight className="h-4 w-4" />
                             </button>
@@ -99,14 +102,16 @@ export default function Introduction() {
                     </p>
                     <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
                         <button
-                            className="rounded-md border border-teal-600 bg-teal-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-teal-50 hover:text-teal-700 "
+                            className="rounded-md border border-teal-600 bg-teal-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-teal-50 hover:text-teal-700"
+                            onClick={() => window.location.href = '/features'}
                         >
                             Explore Features
                         </button>
                         <button
                             className="rounded-md border border-teal-600 px-5 py-3 text-sm font-semibold text-teal-600 hover:bg-teal-600 hover:text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+                            onClick={() => window.location.href = '/usage'}
                         >
-                            View API Docs
+                            View Usages
                         </button>
                     </div>
                 </div>
