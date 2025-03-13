@@ -3,15 +3,12 @@
 import { useTheme } from 'next-themes';
 import { Sun, Moon, Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import Link from "next/link";
+import {usePathname} from "next/navigation";
 
 export interface NavLink {
     name: string;
     href: string;
-}
-
-interface NavLinksProps {
-    mobile?: boolean;
-    setMenuOpen?: (open: boolean) => void;
 }
 
 export default function Header() {
@@ -61,7 +58,7 @@ export default function Header() {
                 {menuOpen && (
                     <div className="lg:hidden py-4 animate-in slide-in-from-top-2">
                         <nav className="flex flex-col space-y-4">
-                            <NavLinks mobile setMenuOpen={setMenuOpen} />
+                            <NavLinks />
                         </nav>
                     </div>
                 )}
@@ -70,32 +67,34 @@ export default function Header() {
     );
 }
 
-function NavLinks({ mobile = false, setMenuOpen }: NavLinksProps) {
+function NavLinks() {
+    const pathname = usePathname();
+
     const links: NavLink[] = [
-        { name: 'Introduction', href: '#introduction' },
-        { name: 'Features', href: '#features' },
-        { name: 'Usage', href: '#usage' },
-        { name: 'Configuration', href: '#configuration' },
-        { name: 'Getting Started', href: '#getting-started' },
+        { name: 'Introduction', href: '/' },
+        { name: 'Features', href: '/features' },
+        { name: 'Usage', href: '/usage' },
+        { name: 'Configuration', href: '/configuration' },
+        { name: 'Getting Started', href: '/getting-started' },
     ];
 
     return (
         <>
-            {links.map((link) => (
-                <a
-                    key={link.name}
-                    href={link.href}
-                    className={`text-sm font-medium transition-colors ${
-                        mobile
-                            ? 'py-2 px-4 rounded-md text-teal-800 dark:text-teal-100 hover:bg-teal-100 dark:hover:bg-teal-700'
-                            : 'text-white hover:text-teal-700 dark:hover:text-teal-200'
-                    }`}
-                    onClick={() => mobile && setMenuOpen?.(false)}
-                >
-                    {link.name}
-                </a>
-            ))}
+            {links.map((link) => {
+                const isActive = pathname === link.href ||
+                    (link.href === '/' && pathname === '') ||
+                    (link.href !== '/' && pathname?.startsWith(link.href));
+
+                return (
+                    <Link
+                        key={link.name}
+                        href={link.href}
+                        className={`text-sm font-medium transition-colors text-white hover:text-teal-700 dark:hover:text-teal-200 ${isActive ? 'font-bold' : ''}`}
+                    >
+                        {link.name}
+                    </Link>
+                );
+            })}
         </>
     );
 }
-
