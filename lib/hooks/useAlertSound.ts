@@ -2,13 +2,15 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-type AlertType = 'success' | 'error' | 'warning' | 'info';
+type AlertType = 'success' | 'error' | 'warning' | 'info' | 'confirm' | 'custom';
 
 const ALERT_SOUNDS: Record<AlertType, string> = {
   success: '/sounds/success alert music.mp3',
   error: '/sounds/error alert music.mp3',
   warning: '/sounds/warning alert music.mp3',
   info: '/sounds/info alert music.mp3',
+  confirm: '/sounds/confirm alert music.mp3',
+  custom: '/sounds/custom alert music.mp3',
 } as const;
 
 interface AlertSoundOptions {
@@ -21,7 +23,7 @@ export const useAlertSound = (type: AlertType, options: AlertSoundOptions = {}) 
   const { volume = 0.5, loop = false, customSound } = options;
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [canPlayAudio, setCanPlayAudio] = useState(false);
-  const [isMuted, setIsMuted] = useState(false); // Global mute state
+  const [isMuted, setIsMuted] = useState(false);
 
   const soundSrc = customSound || ALERT_SOUNDS[type];
 

@@ -62,7 +62,7 @@ interface AlertProps {
 export const Alert = ({ alert }: AlertProps) => {
     const { hideAlert } = useAlert();
     const [isExpanded, setIsExpanded] = useState(false);
-    const { play: playSound, toggleMute, isMuted } = useAlertSound('info', {
+    const { play: playSound, toggleMute, isMuted } = useAlertSound(alert.type || 'info', {
         volume: alert.soundOptions?.volume ?? 0.5,
         loop: alert.soundOptions?.loop ?? false,
         customSound: alert.soundOptions?.customSound,
@@ -87,7 +87,6 @@ export const Alert = ({ alert }: AlertProps) => {
             const startTime = Date.now();
             const endTime = startTime + alert.duration;
 
-            // Update progress bar
             const intervalId = setInterval(() => {
                 const now = Date.now();
                 const remaining = endTime - now;
@@ -99,7 +98,7 @@ export const Alert = ({ alert }: AlertProps) => {
                     hideAlert(alert.id);
                     clearInterval(intervalId);
                 }
-            }, 16); // ~60fps
+            }, 16);
 
             return () => clearInterval(intervalId);
         }
