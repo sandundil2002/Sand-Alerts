@@ -1,6 +1,6 @@
 import { LucideIcon } from "lucide-react";
 
-export type AlertType = 'success' | 'error' | 'warning' | 'info' | 'confirm'; // Added 'confirm' type
+export type AlertType = 'success' | 'error' | 'warning' | 'info' | 'confirm' | 'custom';
 export type AlertPosition = 'top' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 export type AlertAnimation = 'fade' | 'slide';
 

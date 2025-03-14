@@ -3,8 +3,6 @@
 import CodeBlock from "@/components/ui/CodeBlock";
 
 export default function GettingStarted() {
-    const installCode = `npm install sand-alerts lucide-react`;
-
     const setupCode = `// app/layout.tsx
 import { AlertProvider } from 'sand-alerts';
 
@@ -105,13 +103,13 @@ export default function MyComponent() {
                 </p>
                 <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
                     <button
-                        onClick={() => window.location.href = '/#usage'}
+                        onClick={() => window.location.href = '/usage'}
                         className="rounded-md border border-teal-600 bg-teal-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-teal-50 hover:text-teal-700"
                     >
                         View Usage Examples
                     </button>
                     <button
-                        onClick={() => window.location.href = '/#features'}
+                        onClick={() => window.location.href = '/features'}
                         className="rounded-md border border-teal-600 px-5 py-3 text-sm font-semibold text-teal-600 hover:bg-teal-600 hover:text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-teal-600"
                     >
                         Explore Features

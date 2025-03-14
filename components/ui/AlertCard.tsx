@@ -1,5 +1,6 @@
 'use client';
 
+import { CheckCircle, XCircle } from 'lucide-react';
 import { useAlert } from '@/lib/hooks/useAlert';
 import { LucideIcon } from 'lucide-react';
 import CodeBlock from './CodeBlock';
@@ -7,7 +8,7 @@ import CodeBlock from './CodeBlock';
 interface AlertCardProps {
     title: string;
     description: string;
-    type: 'success' | 'error' | 'warning' | 'info';
+    type: 'success' | 'error' | 'warning' | 'info' | 'confirm' | 'custom';
     message: string;
     icon: LucideIcon;
     code: string;
@@ -46,13 +47,43 @@ export default function AlertCard({
     };
 
     const handleShowAlert = () => {
-        showAlert({
-            type,
-            message,
-            icon: Icon,
-            playSound,
-            soundOptions,
-        });
+        if (type === 'confirm') {
+            showAlert({
+                type: 'confirm',
+                message,
+                icon: Icon,
+                playSound,
+                soundOptions,
+                confirm: {
+                    onConfirm: () => {
+                        showAlert({
+                            type: 'success',
+                            message: 'Operation confirmed successfully!',
+                            icon: CheckCircle,
+                            playSound: true,
+                            soundOptions: { volume: 0.6 },
+                        });
+                    },
+                    onCancel: () => {
+                        showAlert({
+                            type: 'info',
+                            message: 'Operation was cancelled!',
+                            icon: XCircle,
+                            playSound: true,
+                            soundOptions: { volume: 0.4 },
+                        });
+                    },
+                },
+            });
+        } else {
+            showAlert({
+                type,
+                message,
+                icon: Icon,
+                playSound,
+                soundOptions,
+            });
+        }
     };
 
     return (

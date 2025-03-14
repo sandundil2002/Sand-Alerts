@@ -104,7 +104,7 @@ export default AnimatedAlertComponent;`;
                     these configurations.
                 </p>
                 <button
-                    onClick={() => window.location.href = '/#getting-started'}
+                    onClick={() => window.location.href = '/started'}
                     className="mt-6 rounded-md bg-teal-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-teal-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
                 >
                     Get Started

@@ -1,26 +1,36 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { AlertCircle, CheckCircle, Info, X, XCircle, LucideIcon } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { AlertCircle, CheckCircle, Info, X, XCircle, Volume2, VolumeX, Bell, LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAlert } from '@/lib/hooks/useAlert';
 import { Alert as AlertType } from '@/lib/types/alert';
 import { useAlertSound } from '@/lib/hooks/useAlertSound';
 
 const alertStyles = {
-    success: 'bg-green-100 border-green-600 text-green-900 dark:bg-green-800 dark:border-green-400 dark:text-green-100',
-    error: 'bg-red-100 border-red-600 text-red-900 dark:bg-red-800 dark:border-red-400 dark:text-red-100',
-    warning: 'bg-yellow-100 border-yellow-600 text-yellow-900 dark:bg-yellow-800 dark:border-yellow-400 dark:text-yellow-100',
-    info: 'bg-blue-100 border-blue-600 text-blue-900 dark:bg-blue-800 dark:border-blue-400 dark:text-blue-100',
-    confirm: 'bg-gray-300 border-gray-700 text-gray-900 dark:bg-gray-600 dark:border-gray-400 dark:text-gray-100',
+    success: 'bg-emerald-100 border-emerald-600 text-emerald-900 dark:bg-emerald-900/70 dark:border-emerald-500 dark:text-emerald-100 hover:bg-emerald-200 dark:hover:bg-emerald-900/80 transition-colors',
+    error: 'bg-rose-100 border-rose-600 text-rose-900 dark:bg-rose-900/70 dark:border-rose-500 dark:text-rose-100 hover:bg-rose-200 dark:hover:bg-rose-900/80 transition-colors',
+    warning: 'bg-amber-100 border-amber-600 text-amber-900 dark:bg-amber-900/70 dark:border-amber-500 dark:text-amber-100 hover:bg-amber-200 dark:hover:bg-amber-900/80 transition-colors',
+    info: 'bg-cyan-100 border-cyan-600 text-cyan-900 dark:bg-cyan-900/70 dark:border-cyan-500 dark:text-cyan-100 hover:bg-cyan-200 dark:hover:bg-cyan-900/80 transition-colors',
+    confirm: 'bg-slate-200 border-slate-700 text-slate-900 dark:bg-slate-800/80 dark:border-slate-400 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-800/90 transition-colors',    custom: 'bg-indigo-100 border-indigo-600 text-indigo-900 dark:bg-indigo-900/70 dark:border-indigo-500 dark:text-indigo-100 hover:bg-indigo-200 dark:hover:bg-indigo-900/80 transition-colors',
+};
+
+const buttonStyles = {
+    success: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500 text-white active:bg-emerald-800 disabled:bg-emerald-400 disabled:cursor-not-allowed transition-colors',
+    error: 'bg-rose-600 hover:bg-rose-700 focus:ring-rose-500 text-white active:bg-rose-800 disabled:bg-rose-400 disabled:cursor-not-allowed transition-colors',
+    warning: 'bg-amber-600 hover:bg-amber-700 focus:ring-amber-500 text-white active:bg-amber-800 disabled:bg-amber-400 disabled:cursor-not-allowed transition-colors',
+    info: 'bg-cyan-600 hover:bg-cyan-700 focus:ring-cyan-500 text-white active:bg-cyan-800 disabled:bg-cyan-400 disabled:cursor-not-allowed transition-colors',
+    confirm: 'bg-slate-700 hover:bg-slate-800 focus:ring-slate-500 text-white active:bg-slate-900 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors',
+    custom: 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 text-white active:bg-indigo-800 disabled:bg-indigo-400 disabled:cursor-not-allowed transition-colors',
 };
 
 const progressStyles = {
-    success: 'bg-green-600 dark:bg-green-300',
-    error: 'bg-red-600 dark:bg-red-300',
-    warning: 'bg-yellow-600 dark:bg-yellow-300',
-    info: 'bg-blue-600 dark:bg-blue-300',
-    confirm: 'bg-gray-600 dark:bg-gray-300',
+    success: 'bg-emerald-600 dark:bg-emerald-400',
+    error: 'bg-rose-600 dark:bg-rose-400',
+    warning: 'bg-amber-600 dark:bg-amber-400',
+    info: 'bg-cyan-600 dark:bg-cyan-400',
+    confirm: 'bg-slate-500/50 dark:bg-slate-400/50',
+    custom: 'bg-indigo-600 dark:bg-indigo-400',
 };
 
 const icons: Record<string, LucideIcon> = {
@@ -28,22 +38,36 @@ const icons: Record<string, LucideIcon> = {
     error: XCircle,
     warning: AlertCircle,
     info: Info,
-    confirm: AlertCircle,
+    confirm: Bell,
 };
 
 interface AlertProps {
     alert: AlertType & {
-        soundOptions?: { volume?: number; loop?: boolean; customSound?: string };
+        soundOptions?: {
+            volume?: number;
+            loop?: boolean;
+            customSound?: string
+        };
+        onAction?: () => void;
+        actionLabel?: string;
+        custom?: {
+            icon?: LucideIcon;
+            confirmLabel?: string;
+            cancelLabel?: string;
+            color?: string;
+        };
     };
 }
 
 export const Alert = ({ alert }: AlertProps) => {
     const { hideAlert } = useAlert();
+    const [isExpanded, setIsExpanded] = useState(false);
     const { play: playSound, toggleMute, isMuted } = useAlertSound('info', {
         volume: alert.soundOptions?.volume ?? 0.5,
         loop: alert.soundOptions?.loop ?? false,
         customSound: alert.soundOptions?.customSound,
     });
+    const [progress, setProgress] = useState(100);
 
     useEffect(() => {
         if (alert.playSound) {
@@ -60,14 +84,28 @@ export const Alert = ({ alert }: AlertProps) => {
 
     useEffect(() => {
         if (alert.duration && alert.duration > 0 && !alert.confirm) {
-            const timer = setTimeout(() => {
-                hideAlert(alert.id);
-            }, alert.duration);
-            return () => clearTimeout(timer);
+            const startTime = Date.now();
+            const endTime = startTime + alert.duration;
+
+            // Update progress bar
+            const intervalId = setInterval(() => {
+                const now = Date.now();
+                const remaining = endTime - now;
+                //@ts-ignore
+                const percentage = (remaining / alert.duration) * 100;
+                setProgress(Math.max(0, percentage));
+
+                if (now >= endTime) {
+                    hideAlert(alert.id);
+                    clearInterval(intervalId);
+                }
+            }, 16); // ~60fps
+
+            return () => clearInterval(intervalId);
         }
     }, [alert.duration, alert.id, hideAlert, alert.confirm]);
 
-    const IconComponent = alert.icon || icons[alert.type || 'info'];
+    const IconComponent = alert.custom?.icon || alert.icon || icons[alert.type || 'info'];
 
     const handleConfirm = () => {
         if (alert.confirm?.onConfirm) {
@@ -83,50 +121,95 @@ export const Alert = ({ alert }: AlertProps) => {
         hideAlert(alert.id);
     };
 
+    const handleAction = () => {
+        if (alert.onAction) {
+            alert.onAction();
+        }
+    };
+
+    const toggleExpand = () => {
+        setIsExpanded(!isExpanded);
+    };
+
     return (
         <div
             className={cn(
-                'relative w-96 max-w-[calc(100vw-2rem)] rounded-lg border p-4 shadow-lg',
+                'relative w-96 max-w-[calc(100vw-2rem)] rounded-lg border-l-4 border shadow-lg transition-all',
                 alertStyles[alert.type || 'info'],
-                alert.animation === 'fade' && 'animate-in fade-in duration-200',
-                alert.animation === 'slide' && 'animate-in slide-in-from-right duration-200'
+                alert.animation === 'fade' && 'animate-in fade-in duration-300',
+                alert.animation === 'slide' && 'animate-in slide-in-from-right duration-300',
+                isExpanded ? 'max-h-96' : 'max-h-40 overflow-hidden'
             )}
             role="alert"
+            aria-live={alert.type === 'error' ? 'assertive' : 'polite'}
         >
-            <div className="flex items-start gap-3">
-                <IconComponent className="h-5 w-5 shrink-0" />
-                <div className="flex-1">
-                    {alert.title && <h3 className="font-semibold">{alert.title}</h3>}
-                    <p className="text-sm">{alert.message}</p>
+            <div className="flex items-start gap-3 p-4">
+                <div className="flex-shrink-0 mt-0.5">
+                    <IconComponent className="h-5 w-5" />
+                </div>
+                <div className="flex-1 overflow-hidden">
+                    {alert.title && (
+                        <h3 className="font-medium text-base mb-1">{alert.title}</h3>
+                    )}
+                    <div className={cn("text-sm", isExpanded ? "" : "line-clamp-3")}>
+                        {alert.message}
+                    </div>
+
+                    {alert.message && alert.message.length > 180 && (
+                        <button
+                            onClick={toggleExpand}
+                            className="text-xs mt-1 font-medium opacity-80 hover:opacity-100"
+                        >
+                            {isExpanded ? 'Show less' : 'Show more'}
+                        </button>
+                    )}
+
+                    {alert.actionLabel && (
+                        <button
+                            onClick={handleAction}
+                            className={cn(
+                                "mt-3 text-sm px-3 py-1 rounded font-medium",
+                                buttonStyles[alert.type || 'info']
+                            )}
+                        >
+                            {alert.actionLabel}
+                        </button>
+                    )}
+
                     {alert.type === 'confirm' && (
-                        <div className="mt-4 flex gap-2">
+                        <div className="mt-3 flex gap-2">
                             <button
                                 onClick={handleConfirm}
-                                className="rounded-md bg-green-500 px-3 py-1 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                                className={cn(
+                                    "rounded px-3 py-1 text-sm font-medium transition-colors",
+                                    "bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                                )}
                             >
-                                Yes
+                                {alert.custom?.confirmLabel || 'Yes'}
                             </button>
                             <button
                                 onClick={handleCancel}
-                                className="rounded-md bg-red-500 px-3 py-1 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                                className="rounded border border-gray-300 dark:border-gray-600 px-3 py-1 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                             >
-                                No
+                                {alert.custom?.cancelLabel || 'No'}
                             </button>
                         </div>
                     )}
                 </div>
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={toggleMute}
-                        className="shrink-0 rounded-md p-1 opacity-70 transition-opacity hover:opacity-100"
-                        aria-label={isMuted ? 'Unmute sound' : 'Mute sound'}
-                    >
-                        {isMuted ? '🔇' : '🔊'}
-                    </button>
+                <div className="flex items-center gap-1">
+                    {alert.playSound && (
+                        <button
+                            onClick={toggleMute}
+                            className="text-current shrink-0 rounded p-1 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                            aria-label={isMuted ? 'Unmute sound' : 'Mute sound'}
+                        >
+                            {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                        </button>
+                    )}
                     {alert.showCloseButton && alert.type !== 'confirm' && (
                         <button
                             onClick={() => hideAlert(alert.id)}
-                            className="shrink-0 rounded-md p-1 opacity-70 transition-opacity hover:opacity-100"
+                            className="text-current shrink-0 rounded p-1 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
                             aria-label="Close alert"
                         >
                             <X className="h-4 w-4" />
@@ -134,11 +217,15 @@ export const Alert = ({ alert }: AlertProps) => {
                     )}
                 </div>
             </div>
-            {alert.showProgressBar && !alert.confirm && (
-                <div className="absolute bottom-0 left-0 right-0 h-1 overflow-hidden rounded-b-lg">
+            {alert.showProgressBar && !alert.confirm && alert.duration && (
+                <div className="absolute bottom-0 left-0 right-0 h-1 overflow-hidden">
                     <div
-                        className={cn('h-full transition-all duration-100', progressStyles[alert.type || 'info'])}
-                        style={{ width: `${alert.progress}%` }}
+                        className={cn('h-full transition-all ease-linear', progressStyles[alert.type || 'info'])}
+                        style={{ width: `${progress}%` }}
+                        role="progressbar"
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={progress}
                     />
                 </div>
             )}

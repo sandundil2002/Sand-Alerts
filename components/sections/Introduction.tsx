@@ -64,6 +64,7 @@ export default function Introduction() {
                             </button>
                             <button
                                 className="w-full sm:w-auto text-sm font-semibold text-white flex items-center justify-center gap-2 cursor-pointer"
+                                onClick={() => window.location.href = '/examples'}
                             >
                                 See Examples<span aria-hidden="true">→</span>
                             </button>
