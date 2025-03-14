@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import React from "react";
 import {AlertProvider} from "@/components/alert/AlertContext";
 import {AlertContainer} from "@/components/alert/AlertContainer";
+import Header from "@/app/layout/Header";
+import Footer from "@/app/layout/Footer";
 
 export const metadata: Metadata = {
     title: "Sand Alerts",
@@ -16,8 +18,10 @@ export default function RootLayout({ children }: {
         <html lang="en">
         <body>
         <AlertProvider>
+            <Header />
             {children}
             <AlertContainer />
+            <Footer />
         </AlertProvider>
         </body>
         </html>
