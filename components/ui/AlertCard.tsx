@@ -1,5 +1,3 @@
-'use client';
-
 import { CheckCircle, XCircle } from 'lucide-react';
 import { useAlert } from '@/lib/hooks/useAlert';
 import { LucideIcon } from 'lucide-react';
@@ -99,6 +97,7 @@ export default function AlertCard({
                 <button
                     onClick={handleShowAlert}
                     className={`w-full mt-6 flex items-center justify-center gap-2 rounded-lg ${buttonColor} px-4 py-3 text-white hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-${type}-500`}
+                    suppressHydrationWarning
                 >
                     <Icon className="h-5 w-5" />
                     Show {title}

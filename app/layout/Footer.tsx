@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import { NavLink } from "@/app/layout/Header";
 import { ExternalLink, Github, Twitter, Mail, MessageCircle } from 'lucide-react';
@@ -108,20 +110,6 @@ export default function Footer() {
                         <p className="text-sm text-teal-700 dark:text-teal-200 mb-3">
                             Get the latest updates and news
                         </p>
-                        <form className="flex flex-col sm:flex-row gap-2">
-                            <input
-                                type="email"
-                                placeholder="Your email"
-                                className="px-3 py-2 bg-white dark:bg-teal-800 border border-teal-300 dark:border-teal-700 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 dark:text-teal-100"
-                                required
-                            />
-                            <button
-                                type="submit"
-                                className="px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-md text-sm transition-colors"
-                            >
-                                Subscribe
-                            </button>
-                        </form>
                     </div>
                 </div>
 
