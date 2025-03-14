@@ -90,8 +90,7 @@ export const Alert = ({ alert }: AlertProps) => {
             const intervalId = setInterval(() => {
                 const now = Date.now();
                 const remaining = endTime - now;
-                //@ts-ignore
-                const percentage = (remaining / alert.duration) * 100;
+                const percentage = (remaining / Number(alert.duration)) * 100;
                 setProgress(Math.max(0, percentage));
 
                 if (now >= endTime) {
