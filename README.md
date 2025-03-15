@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<h1 align="center" id="title"><a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Poppins&amp;weight=600&amp;size=60&amp;pause=1000&amp;color=81E6D9&amp;center=true&amp;vCenter=true&amp;width=800&amp;height=60&amp;lines=Sand+Alerts" alt="Typing SVG"></a></h1>
 
-## Getting Started
+<p align="center"><img src="public/images/home.png" alt="project-image"></p>
 
-First, run the development server:
+<p id="description">Sand Alert is a professional customizable alert component library built with Next js and TypeScript. It offers an intuitive API for simple yet flexible contextual feedback in web applications. Designed for performance and accessibility it seamlessly integrates into any React project from small to enterprise-scale. With robust state management animations and TypeScript support Sand Alert ensures type safety and enhances developer experience while delivering consistent brand-aligned notifications and prompts for exceptional user experiences.</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+<h2>🚀 Demo</h2>
+
+[https://sand-alerts.vercel.app/](https://sand-alerts.vercel.app/)
+
+<h2>Project Screenshots:</h2>
+
+<img src="public/images/success.png" alt="project-screenshot" width="1100" height="450/">
+
+<img src="public/images/error.png" alt="project-screenshot" width="1100" height="450/">
+
+<img src="public/images/warning.png" alt="project-screenshot" width="1100" height="450/">
+
+<img src="public/images/info.png" alt="project-screenshot" width="1100" height="450/">
+
+<img src="public/images/double-check.png" alt="project-screenshot" width="1100" height="450/">
+
+<img src="public/images/double-check.png" alt="project-screenshot" width="1100" height="450/">
+
+<img src="public/images/getting-started.png" alt="project-screenshot" width="1100" height="500/">
+
+<img src="public/images/getting-started.png" alt="project-screenshot" width="1100" height="500/">
+
+<img src="public/images/configuration.png" alt="project-screenshot" width="1100" height="500/">
+
+<img src="public/images/usage.png" alt="project-screenshot" width="1100" height="500/">
+
+<img src="public/images/footer.png" alt="project-screenshot" width="1100" height="500/">
+
+  
+<h2>🧐 Features</h2>
+
+Here're some of the project's best features:
+
+*   🎨 Highly Customizable: Style alerts to match your application's design system
+*   🔄 Smooth Animations: Elegant enter/exit transitions for better UX
+*   🔊 Sound Effects - Audio sounds for different alert types
+*   ⚡ Lightweight: Less than 5KB gzipped with zero dependencies
+*   📱 Responsive: Looks great on all devices and viewport sizes
+*   🌐 Accessibility: WCAG 2.1 compliant with proper ARIA attributes
+*   🌙 Theming: Built-in light/dark mode support
+*   🧩 Component Composition: Build complex alerts with custom content
+*   📦 Tree-Shakable: Import only what you need
+
+<h2>🚀 Quick Start </h2>
+
+    import { useAlert } from 'sand-alerts';
+    import { CheckCircle } from 'lucide-react';
+
+    //Success alert
+    const SuccessExample = () => {
+      const { showAlert } = useAlert();
+      return (
+        <button onClick={() => showAlert({
+          type: 'success',
+          message: 'Operation successful!',
+          icon: CheckCircle,
+          playSound: true,
+          soundOptions: { volume: 0.6 }
+        })}>
+          Trigger Success
+        </button>
+      );
+    };
+
+<h2>🛠️ Installation Steps:</h2>
+
+<p>1. Clone the repository</p>
+
+```
+git clone https://github.com/sandundil2002/Sand-Alerts.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<p>2. Install dependencies</p>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+<h2>🍰 Contribution Guidelines:</h2>
 
-## Learn More
+Contributions to Sand Alert should use TypeScript for type safety follow React best practices with functional components and hooks and include proper documentation for new features while maintaining the existing project structure and Tailwind CSS styling. The pull request process requires updating documentation when needed ensuring all tests pass adding tests for new functionality requesting maintainer review and addressing feedback. Community members should be respectful and inclusive provide constructive feedback assist others in discussions and issues and adhere to the project's code of conduct.
 
-To learn more about Next.js, take a look at the following resources:
+  
+  
+<h2>💻 Built with</h2>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Technologies used in the project:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+*   React - Core library for building the UI components
+*   Next.js - React framework for server-side rendering and routing
+*   TypeScript - Used for type-safe JavaScript development
+*   Tailwind CSS - Utility-first CSS framework for styling
+*   Lucide React - Icon library
 
-## Deploy on Vercel
+<h2>🛡️ License:</h2>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License - see the LICENSE file for details.
